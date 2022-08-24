@@ -47,5 +47,5 @@ class Parser:
                                     self.write_info(language_2, rus_word)
 
 
-isinstance = Parser()
-isinstance.parsing()
+instance = Parser()
+instance.parsing()
