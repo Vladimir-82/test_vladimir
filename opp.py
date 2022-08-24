@@ -1,52 +1,63 @@
-from typing.io import IO
+from typing.io import TextIO
 
 
 class Parser:
     """
-    Base class for parsing
+    Parsing the source file, finding pairs of words
+    and saving them to different files
     """
     LANG_SEP = '\t'
     WORD_SEP = ';'
-    def __init__(self, input_file='test_ling', lang_1='English', lang_2='Russian'):
-        self.input_file = input_file
-        self.lang_1 = lang_1
-        self.lang_2 = lang_2
 
-    def make_list(self, value: str, is_lang_from: bool = True) -> list:
-        '''
-        Makes a sheet of one language
-        '''
-        part = 0 if not is_lang_from else 1
-        words = value.split(Parser.LANG_SEP)[part].split(Parser.WORD_SEP)
+    def __init__(
+            self,
+            input_file_name: str = 'test_ling',
+            lang_from_file_name: str = 'English',
+            lang_to_file_name: str = 'Russian',
+    ):
+        self.input_file_name = input_file_name
+        self.lang_from_file_name = lang_from_file_name
+        self.lang_to_file_name = lang_to_file_name
+
+    def parsing(self) -> None:
+        """
+        Splitting one dictionary file into two
+        with words from the same language
+        """
+        try:
+            with open(f'{self.input_file_name}.txt', 'r',
+                      encoding='utf-8') as input_file:
+                input_data = input_file.readlines()
+        except IOError:
+            print('Error: Unsupported file!')
+        except NameError:
+            print('Error: File is not exist!')
+        else:
+            with open(f'{self.lang_from_file_name}.txt', 'a',
+                      encoding='utf-8') as lang_from_file, \
+                    open(f'{self.lang_to_file_name}.txt', 'a',
+                         encoding='utf-8') as lang_to_file:
+                for words_string in input_data:
+                    words_from = self._get_words(words_string)
+                    words_to = self._get_words(words_string, is_from=False)
+                    for word_from in words_from:
+                        for word_to in words_to:
+                            self._write_word(lang_from_file, word_from)
+                            self._write_word(lang_to_file, word_to)
+
+    def _get_words(self, value: str, is_from: bool = True) -> list:
+        """
+        Get the one language words list.
+        Is_from flag points to the words of first language
+        """
+        part = 1 if is_from else 0
+        words = value.split(self.LANG_SEP)[part].split(self.WORD_SEP)
         return words
 
-    def write_info(self, file: IO, word: str):
-        '''
-        Writes information to a file
-        '''
+    @staticmethod
+    def _write_word(file: TextIO, word: str) -> None:
+        """ Write word to the file """
         file.write(word.strip() + '\n')
-
-    def parsing(self):
-        '''
-        Main function
-        '''
-        first_language = 0
-        second_language = 1
-        try:
-            with open(f'{self.input_file}.txt', 'r', encoding='utf-8') as input:
-                data = input.readlines()
-        except IOError:
-            print('Unsupported file!')
-        else:
-            with open(f'{self.lang_1}.txt', 'a', encoding='utf-8') as language_1, \
-                    open(f'{self.lang_2}.txt', 'a', encoding='utf-8') as language_2:
-                        for string in data:
-                            lang_from_words = self.make_list(string, first_language)
-                            lang_to_words = self.make_list(string, second_language)
-                            for from_word in lang_from_words:
-                                for to_word in lang_to_words:
-                                    self.write_info(language_1, from_word)
-                                    self.write_info(language_2, to_word)
 
 
 instance = Parser()
