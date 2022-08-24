@@ -5,8 +5,8 @@ class Parser:
     """
     Base class for parsing
     """
-    def __init__(self, input='test_ling', lang_1='English', lang_2='Russian'):
-        self.input = input
+    def __init__(self, input_file='test_ling', lang_1='English', lang_2='Russian'):
+        self.input_file = input_file
         self.lang_1 = lang_1
         self.lang_2 = lang_2
 
@@ -26,7 +26,7 @@ class Parser:
         '''
         Main function
         '''
-        with open(f'{self.input}.txt', 'r', encoding='utf-8') as input, \
+        with open(f'{self.input_file}.txt', 'r', encoding='utf-8') as input, \
                 open(f'{self.lang_1}.txt', 'a', encoding='utf-8') as language_1, \
                 open(f'{self.lang_2}.txt', 'a', encoding='utf-8') as language_2:
             data = input.readlines()
