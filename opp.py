@@ -5,18 +5,20 @@ class Parser:
     """
     Base class for parsing
     """
-    lang_sep = '\t'
-    word_sep = ';'
+    LANG_SEP = '\t'
+    WORD_SEP = ';'
     def __init__(self, input_file='test_ling', lang_1='English', lang_2='Russian'):
         self.input_file = input_file
         self.lang_1 = lang_1
         self.lang_2 = lang_2
 
-    def make_list(self, var: str, language: int) -> list:
+    def make_list(self, value: str, is_lang_from: bool = True) -> list:
         '''
         Makes a sheet of one language
         '''
-        return var.split(Parser.lang_sep)[language].split(Parser.word_sep)
+        part = 0 if not is_lang_from else 1
+        words = value.split(Parser.LANG_SEP)[part].split(Parser.WORD_SEP)
+        return words
 
     def write_info(self, file: IO, word: str):
         '''
@@ -39,12 +41,12 @@ class Parser:
             with open(f'{self.lang_1}.txt', 'a', encoding='utf-8') as language_1, \
                     open(f'{self.lang_2}.txt', 'a', encoding='utf-8') as language_2:
                         for string in data:
-                            english_words = self.make_list(string, first_language)
-                            russian_words = self.make_list(string, second_language)
-                            for eng_word in english_words:
-                                for rus_word in russian_words:
-                                    self.write_info(language_1, eng_word)
-                                    self.write_info(language_2, rus_word)
+                            lang_from_words = self.make_list(string, first_language)
+                            lang_to_words = self.make_list(string, second_language)
+                            for from_word in lang_from_words:
+                                for to_word in lang_to_words:
+                                    self.write_info(language_1, from_word)
+                                    self.write_info(language_2, to_word)
 
 
 instance = Parser()
