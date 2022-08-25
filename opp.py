@@ -48,7 +48,7 @@ class Parser:
         Get the one language words list.
         Is_from flag points to the words of first language
         """
-        part = 1 if is_from else 1
+        part = 0 if is_from else 1
         words = value.split(self.LANG_SEP)[part].split(self.WORD_SEP)
         return words
 
