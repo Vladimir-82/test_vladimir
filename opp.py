@@ -17,11 +17,11 @@ class Parser:
         self.lang_from_file_name = lang_from_file_name
         self.lang_to_file_name = lang_to_file_name
 
-    def parsing(self):
-        '''
+    def parsing(self) -> None:
+        """
         Splitting one dictionary file into two
         with words from the same language
-        '''
+        """
         try:
             with open(f'{self.input_file_name}.txt', 'r',
                       encoding='utf-8') as input_file:
@@ -53,10 +53,10 @@ class Parser:
         return words
 
     @staticmethod
-    def _write_word(file: TextIO, word: str):
-        '''
+    def _write_word(file: TextIO, word: str) -> None:
+        """
         Writes word to a file
-        '''
+        """
         file.write(word.strip() + '\n')
 
 
