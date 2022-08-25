@@ -28,8 +28,6 @@ class Parser:
                 input_data = input_file.readlines()
         except IOError:
             print('Error: Unsupported file!')
-        except NameError:
-            print('Error: File does not exist!')
         else:
             with open(f'{self.lang_from_file_name}.txt', 'a',
                       encoding='utf-8') as lang_from_file, \
