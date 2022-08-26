@@ -48,7 +48,8 @@ class Parser:
         Is_from flag points to the words of first language
         """
         part = 0 if is_from else 1
-        words = [word.split(';') for word in TabTokenizer().tokenize(value)][part]
+        words = \
+            [word.split(';') for word in TabTokenizer().tokenize(value)][part]
         return words
 
     @staticmethod
